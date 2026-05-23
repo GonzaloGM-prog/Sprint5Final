@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard Países</title>
+</head>
+
+<body>
+
+<%- include('partials/navbar') %>
+
+<h1>Países Hispanoamericanos</h1>
+
+<table border="1">
+
+    <tr>
+
+        <th>Nombre</th>
+
+        <th>Capital</th>
+
+        <th>Area</th>
+
+        <th>Población</th>
+
+        <th>Region</th>
+
+        <th>Timezones</th>
+
+        <th>Creador</th>
+
+        <th>Editar</th>
+
+        <th>Eliminar</th>
+
+    </tr>
+
+    <% paises.forEach(pais => { %>
+
+        <tr>
+
+            <td><%= pais.name %></td>
+
+            <td><%= pais.capital %></td>
+
+            <td><%= pais.area %></td>
+
+            <td><%= pais.population %></td>
+
+            <td><%= pais.region %></td>
+
+            <td><%= pais.timezones %></td>
+
+            <td><%= pais.creador %></td>
+
+            <td>
+
+                <a href="/api/paises/editar/<%= pais._id %>">
+
+                    Editar
+
+                </a>
+
+            </td>
+
+            <td>
+
+                <a href="/api/paises/eliminar/<%= pais._id %>">
+
+                    Eliminar
+
+                </a>
+
+            </td>
+
+        </tr>
+
+    <% }) %>
+
+</table>
+
+<%- include('partials/footer') %>
+
+</body>
+</html>

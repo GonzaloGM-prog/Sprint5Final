@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Agregar País</title>
+
+</head>
+
+<body>
+
+<%- include('partials/navbar') %>
+
+<h1>Agregar País</h1>
+
+<form action="/api/paises/agregar" method="POST">
+
+    <div>
+
+        <label>Nombre</label>
+
+        <input
+            type="text"
+            name="name"
+            value="<%= datos?.name || '' %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'name') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Capital</label>
+
+        <input
+            type="text"
+            name="capital"
+            value="<%= datos?.capital || '' %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'capital') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Población</label>
+
+        <input
+            type="number"
+            name="population"
+            value="<%= datos?.population || '' %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'population') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Área</label>
+
+        <input
+            type="number"
+            name="area"
+            value="<%= datos?.area || '' %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'area') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Región</label>
+
+        <input
+            type="text"
+            name="region"
+            value="<%= datos?.region || '' %>"
+        >
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Timezone</label>
+
+        <input
+            type="text"
+            name="timezones"
+            value="<%= datos?.timezones || '' %>"
+        >
+
+    </div>
+
+    <br>
+
+    <button type="submit">
+
+        Guardar País
+
+    </button>
+
+</form>
+
+<%- include('partials/footer') %>
+
+</body>
+</html>

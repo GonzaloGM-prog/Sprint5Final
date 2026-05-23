@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Editar País</title>
+
+</head>
+
+<body>
+
+<h1>Editar País</h1>
+
+<form action="/api/paises/editar/<%= pais._id %>" method="POST">
+
+    <input
+        type="text"
+        name="name"
+        value="<%= pais.name %>"
+        required
+    >
+
+    <input
+        type="text"
+        name="capital"
+        value="<%= pais.capital %>"
+    >
+
+    <input
+        type="number"
+        name="population"
+        value="<%= pais.population %>"
+    >
+
+    <input
+        type="number"
+        name="area"
+        value="<%= pais.area %>"
+    >
+
+    <input
+        type="text"
+        name="region"
+        value="<%= pais.region %>"
+    >
+
+    <input
+        type="text"
+        name="timezones"
+        value="<%= pais.timezones %>"
+    >
+
+    <button type="submit">
+
+        Actualizar
+
+    </button>
+
+</form>
+
+</body>
+</html>
