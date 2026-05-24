@@ -18,25 +18,29 @@ export async function importarPaises(req, res) {
         // LIMPIAR DATOS
         const paisesLimpios = paisesEspanol.map(pais => ({
 
-            name: pais.name.common,
+    name:
 
-            capital: pais.capital?.[0],
+        pais.translations?.spa?.official ||
 
-            population: pais.population,
+        pais.name.official,
 
-            area: pais.area,
+    capital: pais.capital?.[0],
 
-            region: pais.region,
+    population: pais.population,
 
-            languages: pais.languages,
+    area: pais.area,
 
-            timezones: pais.timezones,
+    region: pais.region,
 
-            flags: pais.flags,
+    languages: pais.languages,
 
-            creador: 'Gonzalo Gil Miranda'
+    timezones: pais.timezones,
 
-        }));
+    flags: pais.flags,
+
+    creador: 'Gonzalo Gil Miranda'
+
+}));
 
         // BORRAR DATOS ANTERIORES
         await Pais.deleteMany({
@@ -133,19 +137,28 @@ export async function agregarPais(req, res) {
 
             capital: req.body.capital,
 
-            population: req.body.population,
+            population: Number(req.body.population),
 
-            area: req.body.area,
+            area: Number(req.body.area),
 
             region: req.body.region,
 
+            languages: {},
+
             timezones: [req.body.timezones],
+
+            flags: {},
+
+            borders: [],
 
             creador: 'Gonzalo Gil Miranda'
 
         });
 
+        // GUARDAR EN MONGODB
         await nuevoPais.save();
+
+        console.log('País guardado en MongoDB');
 
         res.redirect('/api/paises/dashboard');
 
@@ -153,7 +166,8 @@ export async function agregarPais(req, res) {
 
         console.error(error);
 
-        res.send('Error al agregar país');
+        res.status(500).send('Error al guardar país');
+
     }
 }
 export async function renderEditarPais(req, res) {
@@ -213,6 +227,10 @@ export async function eliminarPais(req, res) {
         console.error(error);
     }
 }
+export function renderAcerca(req, res) {
+
+    res.render('acerca');
+}
 //va quedando de esta manera::
 //importarPaises
 //obtenerPaises
@@ -223,3 +241,4 @@ export async function eliminarPais(req, res) {
 //renderEditarPais
 //editarPais
 //eliminarPais
+//acerca de proyecto

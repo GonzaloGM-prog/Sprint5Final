@@ -10,6 +10,7 @@ import {
     editarPais,
     eliminarPais,
     importarPaises,
+    renderAcerca,
     obtenerPaises
 
 
@@ -66,5 +67,7 @@ router.post('/editar/:id', editarPais);
 router.get('/eliminar/:id', eliminarPais);
 
 router.get('/ver', obtenerPaises);
+
+router.get('/acerca', renderAcerca);
 
 export default router;
