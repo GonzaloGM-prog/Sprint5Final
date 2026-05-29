@@ -177,40 +177,83 @@ export async function renderEditarPais(req, res) {
         const pais = await Pais.findById(req.params.id);
 
         res.render('editarPais', {
-            pais
+
+            pais,
+
+            errores: []
+
         });
 
     } catch (error) {
 
         console.error(error);
+
+        res.send('Error al cargar país');
+
     }
 }
 
 export async function editarPais(req, res) {
 
-    try {
+    const errores = validationResult(req);
 
-        await Pais.findByIdAndUpdate(req.params.id, {
+    if (!errores.isEmpty()) {
 
-            name: req.body.name,
+        return res.render('editarPais', {
 
-            capital: req.body.capital,
+            errores: errores.array(),
 
-            population: req.body.population,
+            pais: {
 
-            area: req.body.area,
+                _id: req.params.id,
 
-            region: req.body.region,
+                ...req.body
 
-            timezones: [req.body.timezones]
+            }
 
         });
+
+    }
+
+    try {
+
+        await Pais.findByIdAndUpdate(
+
+            req.params.id,
+
+            {
+
+                name: req.body.name,
+
+                capital: req.body.capital,
+
+                population: req.body.population,
+
+                area: req.body.area,
+
+                region: req.body.region,
+
+                timezones: [req.body.timezones]
+
+            },
+
+            {
+
+                runValidators: true,
+                returnDocument: 'after'
+
+            }
+
+        );
 
         res.redirect('/api/paises/dashboard');
 
     } catch (error) {
 
         console.error(error);
+
+        res.send('Error al editar el país');
+
     }
 }
 

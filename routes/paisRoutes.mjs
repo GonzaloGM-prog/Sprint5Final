@@ -62,7 +62,35 @@ router.post(
 );
 router.get('/editar/:id', renderEditarPais);
 
-router.post('/editar/:id', editarPais);
+router.post('/editar/:id',
+    [
+
+        body('name')
+            .isLength({ min: 3, max: 90 })
+            .withMessage(
+                'El nombre debe tener entre 3 y 90 caracteres'
+            ),
+
+        body('capital')
+            .isLength({ min: 3, max: 90 })
+            .withMessage(
+                'La capital debe tener entre 3 y 90 caracteres'
+            ),
+
+        body('population')
+            .isInt({ min: 1 })
+            .withMessage(
+                'La población debe ser positiva'
+            ),
+
+        body('area')
+            .isFloat({ min: 1 })
+            .withMessage(
+                'El área debe ser positiva'
+            )
+
+    ],
+    editarPais);
 
 router.get('/eliminar/:id', eliminarPais);
 

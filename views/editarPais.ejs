@@ -5,50 +5,156 @@
 
     <title>Editar País</title>
     <link rel="stylesheet" href="/css/styles.css">
+
 </head>
 
 <body>
+
+<%- include('partials/navbar') %>
 
 <h1>Editar País</h1>
 
 <form action="/api/paises/editar/<%= pais._id %>" method="POST">
 
-    <input
-        type="text"
-        name="name"
-        value="<%= pais.name %>"
-        required
-    >
+    <div>
 
-    <input
-        type="text"
-        name="capital"
-        value="<%= pais.capital %>"
-    >
+        <label>Nombre</label>
 
-    <input
-        type="number"
-        name="population"
-        value="<%= pais.population %>"
-    >
+        <input
+            type="text"
+            name="name"
+            value="<%= pais.name %>"
+        >
 
-    <input
-        type="number"
-        name="area"
-        value="<%= pais.area %>"
-    >
+        <% errores?.forEach(error => { %>
 
-    <input
-        type="text"
-        name="region"
-        value="<%= pais.region %>"
-    >
+            <% if(error.path === 'name') { %>
 
-    <input
-        type="text"
-        name="timezones"
-        value="<%= pais.timezones %>"
-    >
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Capital</label>
+
+        <input
+            type="text"
+            name="capital"
+            value="<%= pais.capital %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'capital') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Población</label>
+
+        <input
+            type="number"
+            name="population"
+            value="<%= pais.population %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'population') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Área</label>
+
+        <input
+            type="number"
+            name="area"
+            value="<%= pais.area %>"
+        >
+
+        <% errores?.forEach(error => { %>
+
+            <% if(error.path === 'area') { %>
+
+                <p style="color:red;">
+
+                    <%= error.msg %>
+
+                </p>
+
+            <% } %>
+
+        <% }) %>
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Región</label>
+
+        <input
+            type="text"
+            name="region"
+            value="<%= pais.region %>"
+        >
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Timezone</label>
+
+        <input
+            type="text"
+            name="timezones"
+            value="<%= pais.timezones %>"
+        >
+
+    </div>
+
+    <br>
 
     <button type="submit">
 
@@ -57,6 +163,8 @@
     </button>
 
 </form>
+
+<%- include('partials/footer') %>
 
 </body>
 </html>
