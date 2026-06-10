@@ -1,58 +1,21 @@
-import Pais from '../models/paisModel.mjs';
+import PaisService from '../services/paisService.mjs';
 import { validationResult } from 'express-validator';
+
+// IMPORTAR PAISES
+
 export async function importarPaises(req, res) {
 
     try {
 
-        const response = await fetch(
-            'https://restcountries.com/v3.1/region/america'
-        );
-
-        const data = await response.json();
-
-        // FILTRAR SOLO PAISES CON ESPAÑOL
-        const paisesEspanol = data.filter(
-            pais => pais.languages?.spa
-        );
-
-        // LIMPIAR DATOS
-        const paisesLimpios = paisesEspanol.map(pais => ({
-
-    name:
-
-        pais.translations?.spa?.official ||
-
-        pais.name.official,
-
-    capital: pais.capital?.[0],
-
-    population: pais.population,
-
-    area: pais.area,
-
-    region: pais.region,
-
-    languages: pais.languages,
-
-    timezones: pais.timezones,
-
-    flags: pais.flags,
-
-    creador: 'Gonzalo Gil Miranda'
-
-}));
-
-        // BORRAR DATOS ANTERIORES
-        await Pais.deleteMany({
-            creador: 'Gonzalo Gil Miranda'
-        });
-
-        // INSERTAR NUEVOS DATOS
-        await Pais.insertMany(paisesLimpios);
+        const cantidad =
+            await PaisService.importarPaises();
 
         res.json({
+
             mensaje: 'Países importados correctamente',
-            cantidad: paisesLimpios.length
+
+            cantidad
+
         });
 
     } catch (error) {
@@ -60,18 +23,23 @@ export async function importarPaises(req, res) {
         console.error(error);
 
         res.status(500).json({
+
             error: 'Error al importar países'
+
         });
+
     }
+
 }
-//ruta para ver paises
+
+// OBTENER PAISES
+
 export async function obtenerPaises(req, res) {
 
     try {
 
-        const paises = await Pais.find({
-            creador: 'Gonzalo Gil Miranda'
-        });
+        const paises =
+            await PaisService.obtenerPaises();
 
         res.json(paises);
 
@@ -80,21 +48,28 @@ export async function obtenerPaises(req, res) {
         console.error(error);
 
         res.status(500).json({
+
             error: 'Error al obtener países'
+
         });
+
     }
+
 }
-//controlador del dasboard
+
+// DASHBOARD
+
 export async function renderDashboard(req, res) {
 
     try {
 
-        const paises = await Pais.find({
-            creador: 'Gonzalo Gil Miranda'
-        });
+        const paises =
+            await PaisService.obtenerPaises();
 
         res.render('dashboard', {
+
             paises
+
         });
 
     } catch (error) {
@@ -102,8 +77,13 @@ export async function renderDashboard(req, res) {
         console.error(error);
 
         res.send('Error');
+
     }
+
 }
+
+// FORMULARIO AGREGAR
+
 export function renderAgregarPais(req, res) {
 
     res.render('agregarPais', {
@@ -113,7 +93,11 @@ export function renderAgregarPais(req, res) {
         datos: {}
 
     });
+
 }
+
+// AGREGAR
+
 export async function agregarPais(req, res) {
 
     try {
@@ -129,9 +113,10 @@ export async function agregarPais(req, res) {
                 datos: req.body
 
             });
+
         }
 
-        const nuevoPais = new Pais({
+        await PaisService.crearPais({
 
             name: req.body.name,
 
@@ -155,26 +140,32 @@ export async function agregarPais(req, res) {
 
         });
 
-        // GUARDAR EN MONGODB
-        await nuevoPais.save();
-
-        console.log('País guardado en MongoDB');
-
-        res.redirect('/api/paises/dashboard');
+        res.redirect(
+            '/api/paises/dashboard'
+        );
 
     } catch (error) {
 
         console.error(error);
 
-        res.status(500).send('Error al guardar país');
+        res.status(500).send(
+            'Error al guardar país'
+        );
 
     }
+
 }
+
+// FORMULARIO EDITAR
+
 export async function renderEditarPais(req, res) {
 
     try {
 
-        const pais = await Pais.findById(req.params.id);
+        const pais =
+            await PaisService.obtenerPais(
+                req.params.id
+            );
 
         res.render('editarPais', {
 
@@ -191,7 +182,10 @@ export async function renderEditarPais(req, res) {
         res.send('Error al cargar país');
 
     }
+
 }
+
+// EDITAR
 
 export async function editarPais(req, res) {
 
@@ -217,7 +211,7 @@ export async function editarPais(req, res) {
 
     try {
 
-        await Pais.findByIdAndUpdate(
+        await PaisService.editarPais(
 
             req.params.id,
 
@@ -235,44 +229,54 @@ export async function editarPais(req, res) {
 
                 timezones: [req.body.timezones]
 
-            },
-
-            {
-
-                runValidators: true,
-                returnDocument: 'after'
-
             }
 
         );
 
-        res.redirect('/api/paises/dashboard');
+        res.redirect(
+            '/api/paises/dashboard'
+        );
 
     } catch (error) {
 
         console.error(error);
 
-        res.send('Error al editar el país');
+        res.send(
+            'Error al editar el país'
+        );
 
     }
+
 }
+
+// ELIMINAR
 
 export async function eliminarPais(req, res) {
 
     try {
 
-        await Pais.findByIdAndDelete(req.params.id);
+        await PaisService.eliminarPais(
+            req.params.id
+        );
 
-        res.redirect('/api/paises/dashboard');
+        res.redirect(
+            '/api/paises/dashboard'
+        );
 
     } catch (error) {
 
         console.error(error);
+
     }
+
 }
+
+// ACERCA DE
+
 export function renderAcerca(req, res) {
 
     res.render('acerca');
+
 }
 //va quedando de esta manera::
 //importarPaises
